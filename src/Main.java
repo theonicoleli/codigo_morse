@@ -18,23 +18,28 @@ public class Main extends Application {
         primaryStage.setTitle("Morse – Decodificar ou Codificar");
         MorseBST bst = new MorseBST();
 
+        // Opcoes para escolher entre decodificar ou codificar
         List<String> options = Arrays.asList("Decodificar", "Codificar");
         ChoiceDialog<String> choice = new ChoiceDialog<>(options.get(0), options);
         choice.setTitle("Escolha de Função");
         choice.setHeaderText("Selecione a operação:");
         choice.setContentText("Operação:");
         Optional<String> opt = choice.showAndWait();
+
+        // Fechar o aplicativo se nenhuma opcao for escolhida
         if (!opt.isPresent()) {
             primaryStage.close();
             return;
         }
 
+        // Condicao para decodificar ou codificar com base na escolha do usuario
         if (opt.get().equals("Decodificar")) {
             TextInputDialog dlg = new TextInputDialog();
             dlg.setTitle("Decodificar Morse");
             dlg.setHeaderText("Digite código Morse (. e -, espaço entre letras):");
             dlg.setContentText("Código:");
             dlg.showAndWait().ifPresent(seq -> {
+                // Exibe o resultado
                 String decoded = bst.decode(seq);
                 Alert a = new Alert(Alert.AlertType.INFORMATION);
                 a.setTitle("Decodificado");
@@ -49,6 +54,7 @@ public class Main extends Application {
             dlg.setHeaderText("Digite palavra para converter em Morse:");
             dlg.setContentText("Texto:");
             dlg.showAndWait().ifPresent(txt -> {
+                // Exibe o resultado da codificação
                 String morse = bst.encode(txt);
                 Alert a = new Alert(Alert.AlertType.INFORMATION);
                 a.setTitle("Codificado");
@@ -59,6 +65,7 @@ public class Main extends Application {
             });
         }
 
+        // Calcula e desenha a arvore
         int h = bst.getHeight();
         int w = (int) Math.pow(2, h) * 40;
         int ht = 100 + h * 100;
